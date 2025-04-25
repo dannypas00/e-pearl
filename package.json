@@ -23,6 +23,8 @@
     "@nuxt/test-utils": "^3.17.2",
     "@tailwindcss/vite": "^4.1.4",
     "eslint": "^9.25.1",
+    "lodash": "^4.17.21",
+    "minecraft-server-util": "^5.4.4",
     "npm-run-all": "^4.1.5",
     "nuxt": "^3.16.2",
     "prettier": "^3.5.3",
@@ -33,6 +35,7 @@
     "vue-router": "^4.5.0"
   },
   "devDependencies": {
+    "@awmottaz/prettier-plugin-void-html": "^1.8.0",
     "typescript": "^5.8.3"
   }
 }
