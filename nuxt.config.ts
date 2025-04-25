@@ -11,6 +11,7 @@ export default defineNuxtConfig({
     '@nuxt/image',
     '@nuxt/test-utils',
     'shadcn-nuxt',
+    '@pinia/nuxt',
   ],
 
   css: ['~/assets/css/tailwind.css'],
@@ -23,6 +24,16 @@ export default defineNuxtConfig({
     esbuild: {
       options: {
         target: 'es2022',
+      },
+    },
+  },
+
+  runtimeConfig: {
+    public: {
+      minecraft: {
+        host: process.env.PUBLIC_MINECRAFT_HOST,
+        port: Number(process.env.PUBLIC_MINECRAFT_PORT),
+        name: process.env.PUBLIC_MINECRAFT_NAME,
       },
     },
   },
