@@ -13,5 +13,6 @@ services:
       ENABLE_RCON: 'TRUE'
       RCON_PASSWORD: 'super-safe-rcon-password'
       MEMORY: '2G'
+      ENABLE_QUERY: 'TRUE'
     volumes:
       - ./minecraft-data:/data

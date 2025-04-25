@@ -3,6 +3,9 @@
     List:
     <pre>{{ data }}</pre>
 
+    Query:
+    <pre>{{ queryData }}</pre>
+
     Send command:
     <form @submit.prevent="sendCommand">
       <input
@@ -18,6 +21,7 @@
 
 <script setup lang="ts">
 const { data } = await useFetch('/api/rcon/list');
+const { data: queryData } = await useFetch('/api/rcon/query');
 
 const command = ref('');
 const commandResponse: Ref<{ response?: string[] } | { error: string }> = ref({});
