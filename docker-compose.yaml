@@ -1,0 +1,17 @@
+services:
+  minecraft:
+    image: itzg/minecraft-server
+    container_name: minecraft
+    restart: unless-stopped
+    ports:
+      - "25565:25565"
+      # NOTE: DO NOT expose this port in production. This is only exposed in development for the local application
+      - "26675:26675"
+    environment:
+      EULA: "TRUE"
+      VERSION: "LATEST"
+      ENABLE_RCON: "TRUE"
+      RCON_PASSWORD: "super-safe-rcon-password"
+      MEMORY: "2G"
+    volumes:
+      - ./minecraft-data:/data
