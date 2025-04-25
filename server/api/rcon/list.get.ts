@@ -13,7 +13,10 @@ export default defineEventHandler(async () => {
 
     const current = Number(match.at(1));
     const max = Number(match.at(2));
-    const names = match.at(3)?.split(', ');
+    const names = match
+      .at(3)
+      ?.split(', ')
+      .filter((name) => name);
 
     return {
       current,
