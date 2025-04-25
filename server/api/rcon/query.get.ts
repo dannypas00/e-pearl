@@ -6,7 +6,7 @@ export default defineEventHandler(async () => {
     Number(process.env.QUERY_PORT),
     {
       enableSRV: false,
-      timeout: 200
+      timeout: 200,
     },
   );
 

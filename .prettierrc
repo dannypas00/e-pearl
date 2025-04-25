@@ -1,5 +1,8 @@
 {
-  "plugins": ["prettier-plugin-tailwindcss"],
+  "plugins": [
+    "prettier-plugin-tailwindcss",
+    "@awmottaz/prettier-plugin-void-html"
+  ],
   "tailwindStylesheet": "./assets/css/tailwind.css",
   "singleQuote": true
 }
