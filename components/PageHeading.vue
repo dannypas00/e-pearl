@@ -34,9 +34,7 @@
           </div>
           <div
             class="mt-2 flex items-center text-sm text-gray-500"
-            :title="
-              status?.players?.sample?.map((player) => player.name).join('\n')
-            "
+            :title="playerSample"
           >
             <Icon
               name="carbon:user-multiple"
@@ -48,6 +46,10 @@
           </div>
         </template>
       </div>
+    </div>
+
+    <div class="mt-5 flex lg:mt-0 lg:ml-4">
+      <slot name="buttons"></slot>
     </div>
   </div>
 </template>
@@ -69,4 +71,11 @@ const address =
   runtimeConfig.public.minecraft.host +
   ':' +
   runtimeConfig.public.minecraft.port;
+
+const playerSample = computed(() => {
+  if (status?.players.sample) {
+    return status.players.sample.map((player) => player.name).join(', ');
+  }
+  return undefined;
+});
 </script>

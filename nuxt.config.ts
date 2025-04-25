@@ -12,6 +12,7 @@ export default defineNuxtConfig({
     '@nuxt/test-utils',
     'shadcn-nuxt',
     '@pinia/nuxt',
+    '@vueuse/nuxt',
   ],
 
   css: ['~/assets/css/tailwind.css'],
