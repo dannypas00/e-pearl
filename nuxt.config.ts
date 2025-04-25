@@ -12,4 +12,12 @@ export default defineNuxtConfig({
   vite: {
     plugins: [tailwindcss()],
   },
+
+  nitro: {
+    esbuild: {
+      options: {
+        target: 'es2022',
+      },
+    },
+  },
 });
