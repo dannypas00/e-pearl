@@ -6,7 +6,7 @@
       >
         <img
           class="mr-2 inline aspect-square size-10 rounded-xs"
-          :src="status.favicon ?? defaultImage"
+          :src="status?.favicon ?? defaultImage"
         >
         {{ runtimeConfig.public.minecraft.name }}
       </h2>
@@ -60,7 +60,7 @@ import defaultImage from '~/assets/img/pack.webp';
 
 const runtimeConfig = useRuntimeConfig();
 const { status } = defineProps<{
-  status: JavaStatusResponse;
+  status: JavaStatusResponse | null;
 }>();
 
 const isActive = computed(() => {
