@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="container mx-auto sm:px-6 sm:pt-2 sm:pb-4 lg:px-8 lg:pt-4 lg:pb-8"
-  >
+  <div class="container mx-auto sm:px-6 sm:pt-2 lg:px-8 lg:pt-4">
     <PageHeading :status>
       <template #buttons>
         <Toggle v-model="enableAutoRefresh" size="lg" class="cursor-pointer">
@@ -13,6 +11,8 @@
         </Toggle>
       </template>
     </PageHeading>
+
+    <PageBody :status></PageBody>
   </div>
 </template>
 
