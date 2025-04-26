@@ -2,6 +2,15 @@
   <div class="container mx-auto sm:px-6 sm:pt-2 lg:px-8 lg:pt-4">
     <PageHeading :status>
       <template #buttons>
+        <Button
+          :variant="status?.version ? 'destructive' : 'secondary'"
+          :title="`${status?.version ? 'Stop' : 'Start'} server`"
+          class="cursor-pointer"
+          @click="toggleServer"
+        >
+          <Icon name="carbon:power" class="size-10" aria-hidden="true"></Icon>
+        </Button>
+
         <Toggle v-model="enableAutoRefresh" size="lg" class="cursor-pointer">
           <Icon
             name="ic:outline-sync"
@@ -18,6 +27,7 @@
 
 <script setup lang="ts">
 import { Toggle } from '~/components/ui/toggle';
+import { Button } from '~/components/ui/button';
 
 useHead({
   htmlAttrs: {
@@ -25,26 +35,45 @@ useHead({
   },
 });
 
-const { data: status } = await useFetch('/api/rcon/query');
+const { data: status } = await useFetch('/api/rcon/query', {
+  key: 'status',
+});
 
 const enableAutoRefresh = ref(false);
 
 watch(enableAutoRefresh, (value) => {
   if (value) {
-    refreshNuxtData();
+    refreshData();
     resume();
   } else {
     pause();
   }
 });
 
-const { pause, resume } = useTimeoutPoll(
-  () => {
-    refreshNuxtData();
-  },
-  5000,
-  {
-    immediate: false,
-  },
-);
+const { pause, resume } = useTimeoutPoll(refreshData, 5000, {
+  immediate: false,
+});
+
+function refreshData() {
+  refreshNuxtData(['status', 'list', 'users']);
+}
+
+async function toggleServer() {
+  // If server is currently online, send a stop command
+  if (status.value?.version) {
+    await $fetch('/api/rcon/command', {
+      method: 'POST',
+      body: {
+        command: 'stop',
+      },
+    });
+
+    refreshData();
+    return;
+  }
+
+  await $fetch('/api/server/start', {
+    method: 'POST',
+  });
+}
 </script>

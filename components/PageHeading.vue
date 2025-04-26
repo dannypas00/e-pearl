@@ -50,7 +50,7 @@
       </div>
     </div>
 
-    <div class="mt-5 flex lg:mt-0 lg:ml-4">
+    <div class="mt-5 flex lg:mt-0 lg:ml-4 gap-2">
       <slot name="buttons"></slot>
     </div>
   </div>

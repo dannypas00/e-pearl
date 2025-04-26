@@ -1,7 +1,7 @@
 <template>
-  <div class="mt-4 grid grid-cols-6 gap-4">
+  <div class="mt-4 flex gap-4">
     <div
-      class="overflow-hidden rounded-lg bg-zinc-800 py-6 inset-shadow-sm inset-shadow-zinc-900"
+      class="w-1/5 overflow-hidden rounded-lg bg-zinc-800 py-6 inset-shadow-sm inset-shadow-zinc-900"
     >
       <div class="px-4 pb-5 sm:px-6">Sidebar</div>
       <div class="px-4 sm:px-6">
@@ -10,25 +10,21 @@
     </div>
 
     <div
-      class="col-span-4 overflow-hidden rounded-lg bg-zinc-800 py-6 inset-shadow-sm inset-shadow-zinc-900"
+      class="col-span-4 w-3/5 overflow-hidden rounded-lg bg-zinc-800 py-6 inset-shadow-sm inset-shadow-zinc-900"
     >
       <div class="px-4 pb-5 sm:px-6">Main content</div>
       <div class="px-4 sm:px-6">
-        <!-- Content goes here -->
+        <CommandInput />
       </div>
     </div>
 
     <div
-      class="overflow-hidden rounded-lg bg-zinc-800 py-6 inset-shadow-sm inset-shadow-zinc-900"
+      class="w-1/5 overflow-hidden rounded-lg bg-zinc-800 py-6 inset-shadow-sm inset-shadow-zinc-900"
     >
       <div class="px-4 pb-5 sm:px-6">Players</div>
-      <div class="px-4 sm:px-6">
-        <PlayerEntry
-          v-for="name in listResponse?.names"
-          :key="name"
-          :name="name"
-        />
-      </div>
+      <ul class="px-4 sm:px-6">
+        <PlayerEntry v-for="user in users" :key="user.id" :user="user" />
+      </ul>
     </div>
   </div>
 </template>
@@ -42,5 +38,22 @@ const { status } = defineProps<{
   status: JavaStatusResponse | null;
 }>();
 
-const { data: listResponse } = useFetch<RconListResponse>('/api/rcon/list');
+const { data: listResponse } = await useFetch<RconListResponse>(
+  '/api/rcon/list',
+  {
+    key: 'list',
+  },
+);
+
+const { data: users, refresh: refreshPlayers } = useAsyncData('users', () =>
+  $fetch('/api/player/bulk', {
+    method: 'GET',
+    key: 'users',
+    query: {
+      names: listResponse.value?.names ?? [],
+    },
+  }),
+);
+
+watch(listResponse, refreshPlayers);
 </script>
