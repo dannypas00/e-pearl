@@ -38,9 +38,13 @@ watch(enableAutoRefresh, (value) => {
   }
 });
 
-const { pause, resume } = useTimeoutPoll(() => {
-  refreshNuxtData();
-}, 5000, {
-  immediate: false,
-});
+const { pause, resume } = useTimeoutPoll(
+  () => {
+    refreshNuxtData();
+  },
+  5000,
+  {
+    immediate: false,
+  },
+);
 </script>

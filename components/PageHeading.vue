@@ -7,7 +7,9 @@
         <img
           class="mr-2 inline aspect-square size-10 rounded-xs"
           :src="status?.favicon ?? defaultImage"
-        >
+          width="64"
+          height="64"
+        />
         {{ runtimeConfig.public.minecraft.name }}
       </h2>
       <div

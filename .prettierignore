@@ -7,3 +7,8 @@ minecraft-data
 .idea
 .output
 
+# Ignore shadcn components
+components/ui
+# Ignore shadcn utils
+lib
+

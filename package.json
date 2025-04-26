@@ -46,9 +46,10 @@
     "vue-router": "^4.5.0"
   },
   "devDependencies": {
-    "@awmottaz/prettier-plugin-void-html": "^1.8.0",
     "@iconify-json/carbon": "^1.2.8",
     "@iconify-json/ic": "^1.2.2",
+    "eslint-config-prettier": "^10.1.2",
+    "eslint-plugin-prettier": "^5.2.6",
     "typescript": "^5.8.3"
   }
 }
