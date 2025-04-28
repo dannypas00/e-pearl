@@ -14,7 +14,7 @@ jobs:
           set -eux
           echo "${{ secrets.ARTIFACT_SSH_KEY }}" > ./hetzner_key
           chmod 600 ./hetzner_key
-          mkdir .ssh
+          mkdir ~/.ssh
           ssh-keyscan -p 22 -t ed25519 ${{ secrets.ARTIFACT_HOST }} >> ~/.ssh/known_hosts
           
           scp -P 22 -i ./hetzner_key ./docker-compose.deploy.yaml ${{ secrets.ARTIFACT_USERNAME }}@${{ secrets.ARTIFACT_HOST }}:~/e-pearl/docker-compose.yaml
