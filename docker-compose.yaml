@@ -16,3 +16,13 @@ services:
       ENABLE_QUERY: 'TRUE'
     volumes:
       - ./minecraft-data:/data
+
+  nuxt:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "3000"
+    profiles:
+      - prod
