@@ -1,7 +1,7 @@
 services:
   minecraft:
     image: itzg/minecraft-server
-    container_name: minecraft
+    container_name: epearl-minecraft
     restart: unless-stopped
     ports:
       - '25565:25565'
@@ -18,6 +18,7 @@ services:
       - ./minecraft-data:/data
 
   nuxt:
+    container_name: epearl-nuxt
     build:
       context: .
       dockerfile: Dockerfile
