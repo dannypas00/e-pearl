@@ -12,13 +12,9 @@ jobs:
       - name: Set up SSH key
         run: |
           set -eux
-          mkdir -p ~/.ssh
-          echo "${{ secrets.ARTIFACT_SSH_KEY }}" > ~/.ssh/id_ed25519
-          chmod 600 ~/.ssh/id_ed25519
+          echo "${{ secrets.ARTIFACT_SSH_KEY }}" > ./hetzner_key
+          chmod 600 ./hetzner_key
           ssh-keyscan -p 22 -t ed25519 ${{ secrets.ARTIFACT_HOST }} >> ~/.ssh/known_hosts
-
-      - name: Deploy to server or Storage Box
-        run: |
-          set -eux
-          scp -P 22 -i $HOME/.ssh/id_ed25519 ./docker-compose.deploy.yaml ${{ secrets.ARTIFACT_USERNAME }}@${{ secrets.ARTIFACT_HOST }}:~/e-pearl/docker-compose.yaml
-          ssh -P 22 -i $HOME/.ssh/id_ed25519 ${{ secrets.ARTIFACT_USERNAME }}@${{ secrets.ARTIFACT_HOST }} "cd ~/e-pearl && docker compose -f docker-compose.yaml up --build -d"
+          
+          scp -P 22 -i ./hetzner_key ./docker-compose.deploy.yaml ${{ secrets.ARTIFACT_USERNAME }}@${{ secrets.ARTIFACT_HOST }}:~/e-pearl/docker-compose.yaml
+          ssh -P 22 -i ./hetzner_key ${{ secrets.ARTIFACT_USERNAME }}@${{ secrets.ARTIFACT_HOST }} "cd ~/e-pearl && docker compose -f docker-compose.yaml up --build -d"
