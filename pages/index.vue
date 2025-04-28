@@ -1,5 +1,5 @@
 <template>
-  <div class="container sm:px-6 sm:pt-2 lg:mx-auto lg:px-8 lg:pt-4">
+  <div class="container sm:px-6 sm:pt-2 lg:mx-auto lg:px-8 lg:pt-4 mx-auto">
     <PageHeading :status>
       <template #buttons>
         <Button
@@ -11,7 +11,7 @@
           <Icon name="carbon:power" class="size-10" aria-hidden="true"></Icon>
         </Button>
 
-        <Toggle v-model="enableAutoRefresh" size="lg" class="cursor-pointer">
+        <Toggle v-model="enableAutoRefresh" size="lg" class="cursor-pointer" title="Toggle auto-update">
           <Icon
             name="ic:outline-sync"
             class="size-10"
@@ -39,7 +39,7 @@ const { data: status } = await useFetch('/api/rcon/query', {
   key: 'status',
 });
 
-const enableAutoRefresh = ref(false);
+const enableAutoRefresh = ref(true);
 
 watch(enableAutoRefresh, (value) => {
   if (value) {

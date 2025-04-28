@@ -1,7 +1,7 @@
 <template>
-  <div class="mt-4 flex flex-wrap gap-4">
+  <div class="mt-4 flex flex-wrap gap-4 mx-6">
     <div
-      class="grow overflow-hidden w-full lg:w-auto rounded-lg bg-zinc-800 py-6 inset-shadow-sm inset-shadow-zinc-900"
+      class="grow overflow-hidden w-full lg:w-auto grow rounded-lg bg-zinc-800 py-6 inset-shadow-sm inset-shadow-zinc-900"
     >
       <div class="px-4 pb-5 sm:px-6">Main content</div>
       <div class="px-4 sm:px-6">
