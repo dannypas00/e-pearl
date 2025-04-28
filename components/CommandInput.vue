@@ -1,17 +1,16 @@
 <template>
   <ScrollArea
     ref="outputArea"
-    class="mb-2 h-[50vh] min-h-96 w-full rounded-lg bg-background pr-4 focus:outline-none"
+    class="mb-2 h-[50vh] min-h-96 rounded-lg bg-background px-4 pr-4 focus:outline-none"
   >
     <code
-      class="mx-4 flex w-full flex-col gap-y-1 py-2 text-wrap wrap-anywhere"
+      class="flex flex-col gap-y-1 py-2 text-wrap wrap-anywhere"
       ref="outputContent"
     >
       <span
         v-for="(line, index) in output"
         :key="index"
         v-text="line"
-        class="w-[98%]"
       />
       <span ref="endOfOutput" class="invisible"></span>
     </code>

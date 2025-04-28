@@ -2,8 +2,8 @@ import serverUtils from 'minecraft-server-util';
 
 export default defineEventHandler(async () => {
   const status = await serverUtils.status(
-    process.env.MINECRAFT_HOST as string,
-    Number(process.env.QUERY_PORT),
+    useRuntimeConfig().minecraft.host as string,
+    Number(useRuntimeConfig().query.port),
     {
       enableSRV: false,
       timeout: 200,

@@ -6,12 +6,13 @@
           :variant="status?.version ? 'destructive' : 'secondary'"
           :title="`${status?.version ? 'Stop' : 'Start'} server`"
           class="cursor-pointer"
+          size="icon"
           @click="toggleServer"
         >
           <Icon name="carbon:power" class="size-10" aria-hidden="true"></Icon>
         </Button>
 
-        <Toggle v-model="enableAutoRefresh" size="lg" class="cursor-pointer" title="Toggle auto-update">
+        <Toggle v-model="enableAutoRefresh" class="cursor-pointer" title="Toggle auto-update">
           <Icon
             name="ic:outline-sync"
             class="size-10"

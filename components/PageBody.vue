@@ -1,7 +1,7 @@
 <template>
-  <div class="mt-4 flex flex-wrap gap-4 mx-6">
+  <div class="mx-6 mt-4 mb-6 flex flex-col gap-4 lg:flex-row">
     <div
-      class="grow overflow-hidden w-full lg:w-auto grow rounded-lg bg-zinc-800 py-6 inset-shadow-sm inset-shadow-zinc-900"
+      class="w-full shrink overflow-hidden rounded-lg bg-zinc-800 py-6 inset-shadow-sm inset-shadow-zinc-900"
     >
       <div class="px-4 pb-5 sm:px-6">Main content</div>
       <div class="px-4 sm:px-6">
@@ -10,7 +10,7 @@
     </div>
 
     <div
-      class="w-1/5 min-w-48 overflow-hidden rounded-lg bg-zinc-800 py-6 inset-shadow-sm inset-shadow-zinc-900"
+      class="w-full overflow-hidden rounded-lg bg-zinc-800 py-6 inset-shadow-sm inset-shadow-zinc-900 lg:w-72"
     >
       <div class="px-4 pb-5 sm:px-6">Players</div>
       <ul class="px-4 sm:px-6">

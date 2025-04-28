@@ -36,6 +36,16 @@ export default defineNuxtConfig({
   },
 
   runtimeConfig: {
+    minecraft: {
+      host: process.env.MINECRAFT_HOST,
+    },
+    rcon: {
+      port: Number(process.env.RCON_PORT),
+      password: process.env.RCON_PASSWORD,
+    },
+    query: {
+      port: Number(process.env.QUERY_PORT),
+    },
     public: {
       minecraft: {
         host: process.env.PUBLIC_MINECRAFT_HOST,

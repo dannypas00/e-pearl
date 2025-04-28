@@ -1,7 +1,9 @@
 import { Rcon } from 'rcon-client';
 
+const runtimeConfig = useRuntimeConfig();
+
 export default await Rcon.connect({
-  host: process.env.MINECRAFT_HOST as string,
-  port: Number(process.env.RCON_PORT),
-  password: process.env.RCON_PASSWORD as string,
+  host: runtimeConfig.minecraft.host as string,
+  port: Number(runtimeConfig.rcon.port),
+  password: runtimeConfig.rcon.password as string,
 });
