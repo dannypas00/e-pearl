@@ -1,5 +1,5 @@
 <template>
-  <div class="container mx-auto sm:px-6 sm:pt-2 lg:px-8 lg:pt-4">
+  <div class="container sm:px-6 sm:pt-2 lg:mx-auto lg:px-8 lg:pt-4">
     <PageHeading :status>
       <template #buttons>
         <Button

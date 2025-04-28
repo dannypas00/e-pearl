@@ -1,5 +1,5 @@
 <template>
-  <div class="lg:flex lg:items-center lg:justify-between">
+  <div class="mx-6 mt-4 lg:flex lg:items-center lg:justify-between">
     <div class="min-w-0 flex-1">
       <h2
         class="text-2xl/7 font-bold text-foreground sm:truncate sm:text-3xl sm:tracking-tight"
@@ -50,7 +50,7 @@
       </div>
     </div>
 
-    <div class="mt-5 flex lg:mt-0 lg:ml-4 gap-2">
+    <div class="mt-5 flex gap-2 lg:mt-0 lg:ml-4">
       <slot name="buttons"></slot>
     </div>
   </div>
