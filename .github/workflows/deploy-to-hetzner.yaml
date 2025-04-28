@@ -1,4 +1,4 @@
-name: Deploy to server or Storage Box
+name: Deploy to hetzner server
 on:
   workflow_dispatch:
 
@@ -11,7 +11,7 @@ jobs:
 
       - name: Set up SSH key
         run: |
-          env
+          set -eux
           mkdir -p ~/.ssh
           echo "${{ secrets.ARTIFACT_SSH_KEY }}" > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
@@ -19,5 +19,6 @@ jobs:
 
       - name: Deploy to server or Storage Box
         run: |
+          set -eux
           scp -P 22 -i $HOME/.ssh/id_ed25519 ./docker-compose.deploy.yaml ${{ secrets.ARTIFACT_USERNAME }}@${{ secrets.ARTIFACT_HOST }}:~/e-pearl/docker-compose.yaml
           ssh -P 22 -i $HOME/.ssh/id_ed25519 ${{ secrets.ARTIFACT_USERNAME }}@${{ secrets.ARTIFACT_HOST }} "cd ~/e-pearl && docker compose -f docker-compose.yaml up --build -d"
