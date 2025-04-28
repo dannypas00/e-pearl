@@ -16,14 +16,3 @@ services:
       ENABLE_QUERY: 'TRUE'
     volumes:
       - ./minecraft-data:/data
-
-  nuxt:
-    container_name: epearl-nuxt
-    build:
-      context: .
-      dockerfile: Dockerfile
-    restart: unless-stopped
-    ports:
-      - "3000:3000"
-    profiles:
-      - prod
