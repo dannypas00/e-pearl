@@ -14,7 +14,6 @@ jobs:
           set -eux
           echo "${{ secrets.ARTIFACT_SSH_KEY }}" > ./hetzner_key
           chmod 600 ./hetzner_key
-          ssh-keyscan -p 22 -H -t ed25519 128.140.37.114
           
-          scp -P 22 -o "UserKnownHostsFile ./known_hosts" -i ./hetzner_key ./docker-compose.deploy.yaml ${{ secrets.ARTIFACT_USERNAME }}@${{ secrets.ARTIFACT_HOST }}:~/e-pearl/docker-compose.yaml
-          ssh -P 22 -o "UserKnownHostsFile ./known_hosts" -i ./hetzner_key ${{ secrets.ARTIFACT_USERNAME }}@${{ secrets.ARTIFACT_HOST }} "cd ~/e-pearl && docker compose -f docker-compose.yaml up --build -d"
+          scp -P 22 -o "StrictHostKeyChecking=no" -i ./hetzner_key ./docker-compose.deploy.yaml ${{ secrets.ARTIFACT_USERNAME }}@${{ secrets.ARTIFACT_HOST }}:~/e-pearl/docker-compose.yaml
+          ssh -P 22 -o "StrictHostKeyChecking=no" -i ./hetzner_key ${{ secrets.ARTIFACT_USERNAME }}@${{ secrets.ARTIFACT_HOST }} "cd ~/e-pearl && docker compose -f docker-compose.yaml up --build -d"
