@@ -16,6 +16,7 @@ services:
       ENABLE_QUERY: 'TRUE'
     volumes:
       - ./minecraft-data:/data
+      - /var/run/docker.sock:/var/run/docker.sock
 
   nuxt:
     container_name: epearl-nuxt
