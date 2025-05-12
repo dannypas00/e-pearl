@@ -42,6 +42,9 @@ useHead({
 
 const { data: status } = await useFetch('/api/rcon/query', {
   key: 'status',
+  onRequestError: (error: Error) => {
+    console.error('Error fetching status:', error);
+  },
 });
 
 const enableAutoRefresh = ref(true);
@@ -81,12 +84,4 @@ async function toggleServer() {
     method: 'POST',
   });
 }
-
-const { data: streamData } = useEventSource('/api/docker/stream', undefined, {
-  autoReconnect: true,
-});
-
-watch(streamData, (value) => {
-  console.log(value);
-});
 </script>

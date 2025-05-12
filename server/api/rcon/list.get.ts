@@ -24,13 +24,9 @@ export default defineEventHandler(
 
       return { current, max, names };
     } catch (e) {
-      if (e instanceof RconError) {
-        return {
-          error: e.message,
-        };
-      }
-
-      throw e;
+      return {
+        error: e?.message ?? 'Unknown error',
+      };
     }
   },
 );

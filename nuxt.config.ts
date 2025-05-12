@@ -12,6 +12,7 @@ export default defineNuxtConfig({
   },
 
   modules: [
+    '@nuxt/test-utils/module',
     '@nuxt/eslint',
     '@nuxt/icon',
     '@nuxt/image',

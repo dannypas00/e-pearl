@@ -33,6 +33,9 @@ const { data: listResponse } = await useFetch<RconListResponse>(
   '/api/rcon/list',
   {
     key: 'list',
+    onRequestError: (error: Error) => {
+      console.error('Error fetching status:', error);
+    },
   },
 );
 

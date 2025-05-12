@@ -7,10 +7,10 @@
       class="flex flex-col gap-y-1 py-2 text-wrap wrap-anywhere"
       ref="outputContent"
     >
-      <span
-        v-for="(line, index) in output"
+      <MinecraftLogLine
+        v-for="(message, index) in output"
         :key="index"
-        v-text="line"
+        :message="message"
       />
       <span ref="endOfOutput" class="invisible"></span>
     </code>
@@ -32,12 +32,14 @@
 import { Button } from '~/components/ui/button';
 import { Input } from '~/components/ui/input';
 import { ScrollArea } from '~/components/ui/scroll-area';
+import type MinecraftLogMessage from '~/types/MinecraftLogMessage';
+import MinecraftLogLine from '~/components/MinecraftLogLine.vue';
 
 const { sendCommand } = useServerStore();
 
 const commandInput = ref<string>('');
 
-const output = ref<string[]>([]);
+const output = ref<Array<string | MinecraftLogMessage[]>>([]);
 
 async function submitInput() {
   if (commandInput.value.trim() === '') {
@@ -50,7 +52,7 @@ async function submitInput() {
 
   output.value.push(`> ${command}`);
 
-  const response = (await sendCommand(command)).response;
+  const response = (await sendCommand(command)).response.filter((line) => line);
   output.value.push(...response);
   await nextTick();
   scrollToBottom();
@@ -68,4 +70,14 @@ function scrollToBottom() {
     });
   }
 }
+
+onMounted(() => {
+  const eventSource = new EventSource('/api/docker/stream');
+  eventSource.addEventListener('message', async ({ data }) => {
+    console.log(data);
+    output.value.push(JSON.parse(data));
+    await nextTick();
+    scrollToBottom();
+  });
+});
 </script>

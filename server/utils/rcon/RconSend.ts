@@ -2,7 +2,18 @@ import RconClient from '~/server/utils/rcon/RconClient';
 import RconError from '~/server/utils/rcon/errors/RconError';
 
 export default async function (command: string): Promise<string[]> {
-  const rcon = RconClient;
+  let rcon;
+  try {
+    rcon = await RconClient;
+  } catch (e) {
+    if (e instanceof Error) {
+      if ('code' in e && String(e.code).includes('ECONNREFUSED')) {
+        throw new RconError('Server offline or unreachable');
+      }
+    }
+
+    throw e;
+  }
 
   try {
     const response = await rcon.send(command);
