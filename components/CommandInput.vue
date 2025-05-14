@@ -26,6 +26,9 @@
     />
     <Button class="cursor-pointer" size="sm" type="submit">Send</Button>
   </form>
+
+  {{ wsStatus }}
+  {{ wsData }}
 </template>
 
 <script setup lang="ts">
@@ -41,6 +44,17 @@ const commandInput = ref<string>('');
 
 const output = ref<Array<string | MinecraftLogMessage[]>>([]);
 
+const {
+  status: wsStatus,
+  data: wsData,
+  send: wsSend,
+  open: wsOpen,
+  close: wsClose,
+} = useWebSocket('/api/docker/attach', {
+  immediate: false,
+  autoReconnect: true,
+});
+
 async function submitInput() {
   if (commandInput.value.trim() === '') {
     return;
@@ -50,12 +64,7 @@ async function submitInput() {
 
   commandInput.value = '';
 
-  output.value.push(`> ${command}`);
-
-  const response = (await sendCommand(command)).response.filter((line) => line);
-  output.value.push(...response);
-  await nextTick();
-  scrollToBottom();
+  wsSend(command);
 }
 
 const outputArea = templateRef<HTMLDivElement>('outputArea');
@@ -71,13 +80,22 @@ function scrollToBottom() {
   }
 }
 
+let eventSource: EventSource;
+
 onMounted(() => {
-  const eventSource = new EventSource('/api/docker/stream');
+  eventSource = new EventSource('/api/docker/logs');
   eventSource.addEventListener('message', async ({ data }) => {
     console.log(data);
     output.value.push(JSON.parse(data));
     await nextTick();
     scrollToBottom();
   });
+
+  wsOpen();
+});
+
+onUnmounted(() => {
+  eventSource.close();
+  wsClose();
 });
 </script>

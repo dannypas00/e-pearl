@@ -29,6 +29,9 @@ export default defineNuxtConfig({
   },
 
   nitro: {
+    experimental: {
+      websocket: true,
+    },
     esbuild: {
       options: {
         target: 'es2022',
