@@ -9,3 +9,5 @@ COPY . /app
 RUN set -eux; npm ci
 
 RUN set -eux; npm run build
+
+CMD ["node", ".output/server/index.mjs"]
