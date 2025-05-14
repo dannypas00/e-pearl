@@ -1,5 +1,5 @@
 <template>
-  <div class="container sm:px-6 sm:pt-2 lg:mx-auto lg:px-8 lg:pt-4 mx-auto">
+  <div class="container mx-auto sm:px-6 sm:pt-2 lg:mx-auto lg:px-8 lg:pt-4">
     <PageHeading :status>
       <template #buttons>
         <Button
@@ -12,7 +12,11 @@
           <Icon name="carbon:power" class="size-10" aria-hidden="true"></Icon>
         </Button>
 
-        <Toggle v-model="enableAutoRefresh" class="cursor-pointer" title="Toggle auto-update">
+        <Toggle
+          v-model="enableAutoRefresh"
+          class="cursor-pointer"
+          title="Toggle auto-update"
+        >
           <Icon
             name="ic:outline-sync"
             class="size-10"
@@ -22,7 +26,7 @@
       </template>
     </PageHeading>
 
-    <PageBody :status></PageBody>
+    <PageBody />
   </div>
 </template>
 
@@ -38,6 +42,9 @@ useHead({
 
 const { data: status } = await useFetch('/api/rcon/query', {
   key: 'status',
+  onRequestError: (error: Error) => {
+    console.error('Error fetching status:', error);
+  },
 });
 
 const enableAutoRefresh = ref(true);
@@ -52,7 +59,7 @@ watch(enableAutoRefresh, (value) => {
 });
 
 const { pause, resume } = useTimeoutPoll(refreshData, 5000, {
-  immediate: false,
+  immediate: enableAutoRefresh.value,
 });
 
 function refreshData() {
@@ -60,20 +67,16 @@ function refreshData() {
 }
 
 async function toggleServer() {
-  // If server is currently online, send a stop command
   if (status.value?.version) {
-    await $fetch('/api/rcon/command', {
+    await $fetch('/api/docker/stop', {
       method: 'POST',
-      body: {
-        command: 'stop',
-      },
     });
 
     refreshData();
     return;
   }
 
-  await $fetch('/api/server/start', {
+  await $fetch('/api/docker/start', {
     method: 'POST',
   });
 }
