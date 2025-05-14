@@ -12,6 +12,7 @@ export default defineNuxtConfig({
   },
 
   modules: [
+    '@nuxt/test-utils/module',
     '@nuxt/eslint',
     '@nuxt/icon',
     '@nuxt/image',
@@ -28,6 +29,9 @@ export default defineNuxtConfig({
   },
 
   nitro: {
+    experimental: {
+      websocket: true,
+    },
     esbuild: {
       options: {
         target: 'es2022',
