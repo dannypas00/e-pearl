@@ -1,10 +1,18 @@
 <template>
-  <span v-if="isObject(message)" class="w-full">
+  <p v-if="isObject(message)" class="w-full">
     <span v-if="message.timestamp" class="text-gray-300" :title="timeAgo">
-      [{{ message.timestamp }}]
+      {{ message.timestamp }}
     </span>
-    {{ message }}
-  </span>
+    <span
+      v-if="message.user"
+      :class="[levelClass, { 'ml-1': !!message.timestamp }]"
+      >[{{ message.level }}]</span
+    >
+    <span v-if="message.player" class="ml-1 text-emerald-300"
+      >&lt;{{ message.player }}&gt;</span
+    >:
+    {{ message.message }}
+  </p>
   <span v-else>{{ message }}</span>
 </template>
 
@@ -33,5 +41,22 @@ const timeAgo = computed(() => {
   }
 
   return undefined;
+});
+
+const levelClass = computed(() => {
+  if (!isObject(message) || !message.level) {
+    return undefined;
+  }
+
+  switch (message.level) {
+    case 'INFO':
+      return 'text-green-500/50';
+    case 'WARN':
+      return 'text-yellow-500/50';
+    case 'ERROR':
+      return 'text-red-500/50';
+    default:
+      return 'text-gray-300';
+  }
 });
 </script>
