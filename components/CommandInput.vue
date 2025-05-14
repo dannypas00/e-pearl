@@ -19,17 +19,17 @@
         </code>
       </ScrollArea>
 
-      <div
-        class="absolute right-2 bottom-2 p-3 transition-opacity duration-500"
+      <Button
+        v-show="!scrolledToBottom"
+        size="icon"
+        class="absolute right-3 bottom-3 p-3 transition-opacity duration-200"
         :class="{
-          'opacity-20 hover:opacity-80': !scrolledToBottom,
-          'opacity-0': scrolledToBottom,
+          'opacity-10 hover:opacity-80': !scrolledToBottom,
         }"
+        @click="scrollToBottom(false)"
       >
-        <Button size="icon" @click="scrollToBottom(false)">
-          <Icon name="carbon:arrow-down" class="size-5" />
-        </Button>
-      </div>
+        <Icon name="carbon:arrow-down" class="size-5" />
+      </Button>
     </div>
 
     <form
