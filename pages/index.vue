@@ -67,20 +67,16 @@ function refreshData() {
 }
 
 async function toggleServer() {
-  // If server is currently online, send a stop command
   if (status.value?.version) {
-    await $fetch('/api/rcon/command', {
+    await $fetch('/api/docker/stop', {
       method: 'POST',
-      body: {
-        command: 'stop',
-      },
     });
 
     refreshData();
     return;
   }
 
-  await $fetch('/api/server/start', {
+  await $fetch('/api/docker/start', {
     method: 'POST',
   });
 }

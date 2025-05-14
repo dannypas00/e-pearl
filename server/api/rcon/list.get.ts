@@ -1,5 +1,3 @@
-import RconError from '~/server/utils/rcon/errors/RconError';
-
 export type RconListResponse = {
   current: number;
   max: number;
@@ -8,25 +6,23 @@ export type RconListResponse = {
 
 export default defineEventHandler(
   async (): Promise<RconListResponse | { error: string }> => {
-    try {
-      const response = (await RconSend('list'))[0];
+    const response = (await RconSend('list'))[0];
 
-      const match = response.match(
-        /There are (\d+) of a max of (\d+) players online: (.*)/,
-      );
-      if (!match) {
-        throw new RconError('Invalid response from server');
-      }
+    const match = response.match(
+      /There are (\d+) of a max of (\d+) players online: (.*)/,
+    );
 
-      const current = Number(match.at(1));
-      const max = Number(match.at(2));
-      const names = (match.at(3) ?? '').split(', ').filter((name) => name);
-
-      return { current, max, names };
-    } catch (e) {
-      return {
-        error: e?.message ?? 'Unknown error',
-      };
+    if (!match) {
+      throw createError({
+        statusCode: 500,
+        statusMessage: 'Invalid response from server',
+      });
     }
+
+    const current = Number(match.at(1));
+    const max = Number(match.at(2));
+    const names = (match.at(3) ?? '').split(', ').filter((name) => name);
+
+    return { current, max, names };
   },
 );

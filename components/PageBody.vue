@@ -38,9 +38,6 @@ const { data: listResponse } = await useFetch<RconListResponse>(
   '/api/rcon/list',
   {
     key: 'list',
-    onRequestError: (error: Error) => {
-      console.error('Error fetching status:', error);
-    },
   },
 );
 
@@ -54,5 +51,10 @@ const { data: users, refresh: refreshPlayers } = useAsyncData('users', () =>
   }),
 );
 
-watch(listResponse, refreshPlayers);
+watch(
+  () => listResponse,
+  () => {
+    refreshPlayers();
+  },
+);
 </script>

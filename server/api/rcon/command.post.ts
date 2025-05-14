@@ -15,11 +15,11 @@ export default defineEventHandler(
 
       return { response };
     } catch (e) {
-      if (e instanceof RconError) {
-        return { error: e.message };
-      }
-
-      throw e;
+      throw createError({
+        statusCode: 500,
+        statusMessage: 'Failed to send command',
+        data: e,
+      });
     }
   },
 );

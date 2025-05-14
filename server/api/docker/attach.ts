@@ -5,30 +5,29 @@ let stream: NodeJS.ReadWriteStream | undefined;
 
 export default defineWebSocketHandler({
   async open(peer) {
-    const container = await getMinecraftContainer();
-    if (!container) {
-      console.error('Container not found');
-      peer.close(404, 'Container not found');
-      return;
+    try {
+      const container = await getMinecraftContainer();
+
+      stream = await container.attach({
+        stream: true,
+        stdin: true,
+        stdout: true,
+        stderr: false,
+        logs: true,
+      });
+
+      stream.on('data', (data: Buffer) => {
+        const message = data
+          .toString()
+          .split('\n')
+          .map((line) => parseLogMessage(line))
+          .filter((message) => !!message);
+
+        peer.send(JSON.stringify(message));
+      });
+    } catch {
+      peer.close(undefined, 'Error attaching to container');
     }
-
-    stream = await container.attach({
-      stream: true,
-      stdin: true,
-      stdout: true,
-      stderr: false,
-      logs: true,
-    });
-
-    stream.on('data', (data: Buffer) => {
-      const message = data
-        .toString()
-        .split('\n')
-        .map((line) => parseLogMessage(line))
-        .filter((message) => !!message);
-
-      peer.send(JSON.stringify(message));
-    });
   },
   async message(peer, message) {
     const command = message.toString() + '\n';

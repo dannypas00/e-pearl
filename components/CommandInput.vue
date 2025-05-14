@@ -48,7 +48,9 @@ const {
   close: wsClose,
 } = useWebSocket('/api/docker/attach', {
   immediate: false,
-  autoReconnect: true,
+  autoReconnect: {
+    delay: 10000,
+  },
 });
 
 watch(wsData, async (data) => {

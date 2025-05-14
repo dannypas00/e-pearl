@@ -8,14 +8,15 @@ export async function getContainers() {
   return await getDocker().listContainers();
 }
 
-export async function getMinecraftContainer() {
+export async function getMinecraftContainer(includeStopped: boolean = false) {
   const id = (await getContainers()).find(
     (container) =>
-      container.State === 'running' && container.Names[0].includes('minecraft'),
+      (container.State === 'running' || includeStopped) &&
+      container.Names[0].includes('minecraft'),
   )?.Id;
 
   if (!id) {
-    return null;
+    throw createError({ statusCode: 400, statusText: 'Container not found' });
   }
 
   return getDocker().getContainer(id);
