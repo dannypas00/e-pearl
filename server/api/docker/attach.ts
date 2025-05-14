@@ -21,7 +21,7 @@ export default defineWebSocketHandler({
           .toString()
           .split('\n')
           .map((line) => parseLogMessage(line))
-          .filter((message) => !!message);
+          .filter((message) => message && !!message.message);
 
         peer.send(JSON.stringify(message));
       });

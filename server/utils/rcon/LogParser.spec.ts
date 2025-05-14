@@ -70,7 +70,6 @@ describe.each([
   test(
     'should return expected ' + (excludeRcon ? 'without' : 'with') + ' rcon',
     () => {
-      console.log(excludeRcon);
       const result = parseLogMessage(message, excludeRcon);
       if (expected === null) {
         expect(result).toBeNull();

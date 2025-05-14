@@ -57,7 +57,6 @@ watch(wsData, async (data) => {
   const messages = JSON.parse(data);
   output.value.push(...messages);
   await nextTick();
-  console.log(messages.length);
   scrollToBottom(messages.length < 10);
 });
 

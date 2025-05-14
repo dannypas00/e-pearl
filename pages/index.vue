@@ -59,7 +59,7 @@ watch(enableAutoRefresh, (value) => {
 });
 
 const { pause, resume } = useTimeoutPoll(refreshData, 5000, {
-  immediate: false,
+  immediate: enableAutoRefresh.value,
 });
 
 function refreshData() {
