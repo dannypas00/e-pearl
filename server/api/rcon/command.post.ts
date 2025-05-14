@@ -8,8 +8,6 @@ export default defineEventHandler(
   > => {
     const body = await readBody(event);
 
-
-
     try {
       const response: Array<MinecraftLogMessage | null> = (
         await RconSend(body.command)

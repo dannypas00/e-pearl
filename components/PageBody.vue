@@ -3,9 +3,15 @@
     <div
       class="w-full shrink overflow-hidden rounded-lg bg-zinc-800 py-6 inset-shadow-sm inset-shadow-zinc-900"
     >
-      <div class="px-4 pb-5 sm:px-6">Main content</div>
+      <div class="flex w-full justify-between px-4 pb-5 sm:px-6">
+        <h2>Main content</h2>
+        <div class="flex flex-row space-x-2 items-center">
+          <Label for="follow-console">Follow console</Label>
+          <Switch id="follow-console" v-model="followConsole" />
+        </div>
+      </div>
       <div class="px-4 sm:px-6">
-        <CommandInput />
+        <CommandInput :follow="followConsole" />
       </div>
     </div>
 
@@ -24,10 +30,14 @@
 import type { JavaStatusResponse } from 'minecraft-server-util';
 import PlayerEntry from '~/components/partials/PlayerEntry.vue';
 import type { RconListResponse } from '~/server/api/rcon/list.get';
+import { Switch } from '~/components/ui/switch';
+import { Label } from '~/components/ui/label';
 
 const { status } = defineProps<{
   status: JavaStatusResponse | null;
 }>();
+
+const followConsole = ref(true);
 
 const { data: listResponse } = await useFetch<RconListResponse>(
   '/api/rcon/list',

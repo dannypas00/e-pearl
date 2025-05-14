@@ -3,6 +3,8 @@ services:
     image: itzg/minecraft-server
     container_name: epearl-minecraft
     restart: unless-stopped
+    stdin_open: true
+    tty: true
     ports:
       - '25565:25565'
       # NOTE: DO NOT expose this port in production. This is only exposed in development for the local application

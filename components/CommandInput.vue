@@ -26,9 +26,6 @@
     />
     <Button class="cursor-pointer" size="sm" type="submit">Send</Button>
   </form>
-
-  {{ wsStatus }}
-  {{ wsData }}
 </template>
 
 <script setup lang="ts">
@@ -36,16 +33,15 @@ import { Button } from '~/components/ui/button';
 import { Input } from '~/components/ui/input';
 import { ScrollArea } from '~/components/ui/scroll-area';
 import type MinecraftLogMessage from '~/types/MinecraftLogMessage';
-import MinecraftLogLine from '~/components/MinecraftLogLine.vue';
 
-const { sendCommand } = useServerStore();
+const { follow } = defineProps<{
+  follow: boolean;
+}>();
 
 const commandInput = ref<string>('');
-
-const output = ref<Array<string | MinecraftLogMessage[]>>([]);
+const output = ref<MinecraftLogMessage[]>([]);
 
 const {
-  status: wsStatus,
   data: wsData,
   send: wsSend,
   open: wsOpen,
@@ -53,6 +49,14 @@ const {
 } = useWebSocket('/api/docker/attach', {
   immediate: false,
   autoReconnect: true,
+});
+
+watch(wsData, async (data) => {
+  const messages = JSON.parse(data);
+  output.value.push(...messages);
+  await nextTick();
+  console.log(messages.length);
+  scrollToBottom(messages.length < 10);
 });
 
 async function submitInput() {
@@ -70,32 +74,26 @@ async function submitInput() {
 const outputArea = templateRef<HTMLDivElement>('outputArea');
 const outputContent = templateRef<HTMLParagraphElement>('outputContent');
 
-function scrollToBottom() {
-  if (outputContent.value) {
+function scrollToBottom(smooth: boolean = true) {
+  if (outputContent.value && follow) {
     outputContent.value.scrollIntoView({
       block: 'end',
       inline: 'nearest',
-      behavior: 'smooth',
+      behavior: smooth ? 'smooth' : 'instant',
     });
   }
 }
 
-let eventSource: EventSource;
+watch(
+  () => follow,
+  (value) => {
+    if (value) {
+      scrollToBottom(true);
+    }
+  },
+);
 
-onMounted(() => {
-  eventSource = new EventSource('/api/docker/logs');
-  eventSource.addEventListener('message', async ({ data }) => {
-    console.log(data);
-    output.value.push(JSON.parse(data));
-    await nextTick();
-    scrollToBottom();
-  });
+onMounted(wsOpen);
 
-  wsOpen();
-});
-
-onUnmounted(() => {
-  eventSource.close();
-  wsClose();
-});
+onUnmounted(wsClose);
 </script>

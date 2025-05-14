@@ -5,12 +5,18 @@ export function parseLogMessage(
   excludeRcon: boolean = true,
 ): MinecraftLogMessage | null {
   const regex =
-    /^.*\[(?<time>\d{2}:\d{2}:\d{2})]\s\[(?<user>.+)\/(?<level>INFO|WARN|ERROR|DEBUG)]: (?:.* <(?<player>.*)> )?(?<message>.*)$/;
+    /^\s*\[(?<time>\d{2}:\d{2}:\d{2})]\s\[(?<user>.+)\/(?<level>INFO|WARN|ERROR|DEBUG)]: (?:\[.*] )?(?:<(?<player>.*)> )?(?<message>.*?)$/;
 
-  const match = message.match(regex);
+  // Remove carriage returns from buffer outputs
+  const trimmedMessage = message.replace(/\r|\\r/, '');
+  const match = trimmedMessage.match(regex);
 
   if (!match) {
-    return null;
+    return {
+      user: 'Server',
+      level: 'INFO',
+      message: trimmedMessage,
+    } as MinecraftLogMessage;
   }
 
   if (excludeRcon && match.groups?.user?.includes('RCON ')) {
@@ -20,8 +26,8 @@ export function parseLogMessage(
   return {
     timestamp: match.groups?.time,
     user: match.groups?.user,
-    level: match.groups?.level as 'INFO' | 'WARN' | 'ERROR' | 'DEBUG',
+    level: match.groups?.level,
     player: match.groups?.player,
-    message: match.groups?.message,
+    message: match.groups?.message.trim(),
   } as MinecraftLogMessage;
 }

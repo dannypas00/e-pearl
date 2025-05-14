@@ -1,5 +1,5 @@
 export default interface MinecraftLogMessage {
-  timestamp: string;
+  timestamp?: string;
   user: string;
   level: 'INFO' | 'WARN' | 'ERROR' | 'DEBUG';
   player?: string;

@@ -3,6 +3,9 @@ services:
     image: itzg/minecraft-server
     container_name: epearl-minecraft
     restart: unless-stopped
+    # stdin and tty are required to attach the web console to the docker container
+    stdin_open: true
+    tty: true
     ports:
       - '25565:25565'
     environment:

@@ -1,42 +1,46 @@
 import { getMinecraftContainer } from '~/server/utils/docker/MinecraftContainer';
 import type { Hooks } from 'crossws';
 
+let stream: NodeJS.ReadWriteStream | undefined;
+
 export default defineWebSocketHandler({
   async open(peer) {
-    console.log('WebSocket connection opened:', peer.id);
-    peer.context.container = await getMinecraftContainer();
-    if (!peer.context.container) {
+    const container = await getMinecraftContainer();
+    if (!container) {
       console.error('Container not found');
       peer.close(404, 'Container not found');
       return;
     }
-  },
-  async message(peer, message) {
-    console.log(message.toString());
-    if (!peer.context.container) {
-      console.log('No container');
-      return;
-    }
 
-    const command = message.toString() + '\n';
-    const container = await getMinecraftContainer();
-    const stream: NodeJS.ReadWriteStream | undefined = await container?.attach({
+    stream = await container.attach({
       stream: true,
       stdin: true,
-      stdout: false,
+      stdout: true,
       stderr: false,
-      hijack: true,
       logs: true,
     });
+
+    stream.on('data', (data: Buffer) => {
+      const message = data
+        .toString()
+        .split('\n')
+        .map((line) => parseLogMessage(line))
+        .filter((message) => !!message);
+
+      peer.send(JSON.stringify(message));
+    });
+  },
+  async message(peer, message) {
+    const command = message.toString() + '\n';
 
     if (!stream) {
       console.error('No stream');
       return;
     }
 
-    const success = stream.write(command, (err) => console.error(err));
-    console.log(success);
-
-    stream.end();
+    stream.write(command);
+  },
+  async close() {
+    stream?.end();
   },
 } as Partial<Hooks>);

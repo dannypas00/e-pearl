@@ -37,6 +37,35 @@ describe.each([
       message: 't',
     } as Partial<MinecraftLogMessage>,
   },
+  {
+    message: '[init] Setting initial memory to 2G and max to 2G',
+    excludeRcon: true,
+    expected: {
+      level: 'INFO',
+      user: 'Server',
+      message: '[init] Setting initial memory to 2G and max to 2G',
+    },
+  },
+  {
+    message: '[07:47:24] [ServerMain/INFO]: Loaded 1373 recipes\\r',
+    excludeRcon: true,
+    expected: {
+      timestamp: '07:47:24',
+      level: 'INFO',
+      user: 'ServerMain',
+      message: 'Loaded 1373 recipes',
+    },
+  },
+  {
+    message: '[07:55:13] [Server thread/INFO]: /spectate [<target>]',
+    excludeRcon: true,
+    expected: {
+      timestamp: '07:55:13',
+      level: 'INFO',
+      user: 'Server thread',
+      message: '/spectate [<target>]',
+    },
+  },
 ])('Parse log message $message', ({ message, excludeRcon, expected }) => {
   test(
     'should return expected ' + (excludeRcon ? 'without' : 'with') + ' rcon',
