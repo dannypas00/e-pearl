@@ -18,7 +18,6 @@
 
 <script setup lang="ts">
 import type MinecraftLogMessage from '~/types/MinecraftLogMessage';
-import { isObject } from 'lodash';
 import moment from 'moment-timezone';
 
 export type MinecraftLogLineProps = {

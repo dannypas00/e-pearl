@@ -1,13 +1,11 @@
-import _ from 'lodash';
-
 export default defineEventHandler(async (event) => {
   let names = getQuery(event).names;
 
-  if (_.isEmpty(names)) {
+  if (!names) {
     return [];
   }
 
-  if (!_.isArray(names)) {
+  if (typeof names === 'string') {
     names = [names];
   }
 

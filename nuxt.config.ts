@@ -20,6 +20,7 @@ export default defineNuxtConfig({
     'shadcn-nuxt',
     '@pinia/nuxt',
     '@vueuse/nuxt',
+    'nuxt-lodash',
   ],
 
   css: ['~/assets/css/tailwind.css'],
@@ -57,5 +58,10 @@ export default defineNuxtConfig({
         name: process.env.PUBLIC_MINECRAFT_NAME,
       },
     },
+  },
+
+  lodash: {
+    prefix: '_',
+    upperAfterPrefix: false,
   },
 });

@@ -9,6 +9,8 @@ services:
       - '25565:25565'
       # NOTE: DO NOT expose this port in production. This is only exposed in development for the local application
       - '25575:25575'
+    env_file:
+      - .env
     environment:
       EULA: 'TRUE'
       VERSION: 'LATEST'
