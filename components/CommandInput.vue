@@ -9,6 +9,7 @@
     >
       <MinecraftLogLine
         v-for="(message, index) in output"
+        v-once
         :key="index"
         :message="message"
       />
