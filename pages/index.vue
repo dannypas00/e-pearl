@@ -26,7 +26,7 @@
       </template>
     </PageHeading>
 
-    <PageBody :status></PageBody>
+    <PageBody />
   </div>
 </template>
 

@@ -5,7 +5,7 @@
     >
       <div class="flex w-full justify-between px-4 pb-5 sm:px-6">
         <h2>Main content</h2>
-        <div class="flex flex-row space-x-2 items-center">
+        <div class="flex flex-row items-center space-x-2">
           <Label for="follow-console">Follow console</Label>
           <Switch id="follow-console" v-model="followConsole" />
         </div>
@@ -27,15 +27,10 @@
 </template>
 
 <script setup lang="ts">
-import type { JavaStatusResponse } from 'minecraft-server-util';
 import PlayerEntry from '~/components/partials/PlayerEntry.vue';
 import type { RconListResponse } from '~/server/api/rcon/list.get';
 import { Switch } from '~/components/ui/switch';
 import { Label } from '~/components/ui/label';
-
-const { status } = defineProps<{
-  status: JavaStatusResponse | null;
-}>();
 
 const followConsole = ref(true);
 

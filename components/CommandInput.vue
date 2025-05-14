@@ -4,8 +4,8 @@
     class="mb-2 h-[50vh] min-h-96 rounded-lg bg-background px-4 pr-4 focus:outline-none"
   >
     <code
-      class="flex flex-col gap-y-1 py-2 text-wrap wrap-anywhere"
       ref="outputContent"
+      class="flex flex-col gap-y-1 py-2 text-wrap wrap-anywhere"
     >
       <MinecraftLogLine
         v-for="(message, index) in output"
