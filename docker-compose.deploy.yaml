@@ -22,16 +22,10 @@ services:
     container_name: epearl-nuxt
     image: ghcr.io/dannypas00/e-pearl:latest
     restart: unless-stopped
-
-  nginx:
-    container_name: epearl-nginx
-    image: nginx:latest
-    restart: unless-stopped
+    env_file:
+      - .env
     ports:
-      - '80:80'
-      - '443:443'
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf
+      - '3000:3000'
 
 volumes:
   minecraft_data:

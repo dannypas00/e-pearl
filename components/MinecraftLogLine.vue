@@ -1,5 +1,5 @@
 <template>
-  <p v-if="isObject(message)" class="w-full">
+  <p v-if="_.isObject(message)" class="w-full">
     <span v-if="message.timestamp" class="text-gray-300" :title="timeAgo">
       {{ message.timestamp }}
     </span>
@@ -19,6 +19,7 @@
 <script setup lang="ts">
 import type MinecraftLogMessage from '~/types/MinecraftLogMessage';
 import moment from 'moment-timezone';
+import _ from 'lodash';
 
 export type MinecraftLogLineProps = {
   message: MinecraftLogMessage | string;
@@ -26,7 +27,7 @@ export type MinecraftLogLineProps = {
 const { message } = defineProps<MinecraftLogLineProps>();
 
 const timeAgo = computed(() => {
-  if (isObject(message) && message.timestamp) {
+  if (_.isObject(message) && message.timestamp) {
     const split = message.timestamp.split(':');
 
     return moment()
@@ -43,7 +44,7 @@ const timeAgo = computed(() => {
 });
 
 const levelClass = computed(() => {
-  if (!isObject(message) || !message.level) {
+  if (!_.isObject(message) || !message.level) {
     return undefined;
   }
 
