@@ -15,9 +15,8 @@
           <LogFilterDropdown @filter="(value) => (logFilter = value)" />
         </div>
       </div>
-      <div class="px-4 sm:px-6">
-        <CommandInput :log-filter="logFilter" :follow="followConsole" />
-      </div>
+
+      <CommandInput :log-filter="logFilter" :follow="followConsole" />
     </div>
 
     <div

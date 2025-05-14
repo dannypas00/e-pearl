@@ -1,32 +1,51 @@
 <template>
-  <ScrollArea
-    ref="outputArea"
-    class="mb-2 h-[50vh] min-h-96 rounded-lg bg-background px-4 pr-4 focus:outline-none"
-  >
-    <code
-      ref="outputContent"
-      class="flex flex-col gap-y-1 py-2 text-wrap wrap-anywhere"
-    >
-      <template v-for="(message, index) in output" :key="index">
-        <MinecraftLogLine
-          v-if="logFilter.includes(message?.level ?? 'DEBUG')"
-          :message="message"
-        />
-      </template>
-      <span ref="endOfOutput" class="invisible"></span>
-    </code>
-  </ScrollArea>
+  <div class="px-4 sm:px-6">
+    <div class="relative">
+      <ScrollArea
+        ref="outputArea"
+        class="mb-2 h-[50vh] min-h-96 rounded-lg bg-background px-4 pr-4 focus:outline-none"
+      >
+        <code
+          ref="outputContent"
+          class="flex flex-col gap-y-1 py-2 text-wrap wrap-anywhere"
+        >
+          <template v-for="(message, index) in output" :key="index">
+            <MinecraftLogLine
+              v-if="logFilter.includes(message?.level ?? 'DEBUG')"
+              :message="message"
+            />
+          </template>
+          <span ref="endOfOutput" class="invisible"></span>
+        </code>
+      </ScrollArea>
 
-  <form class="flex w-full items-center gap-1.5" @submit.prevent="submitInput">
-    <Input
-      id="command"
-      v-model="commandInput"
-      type="text"
-      placeholder="Type 'help' to see available commands"
-      class="!bg-background"
-    />
-    <Button class="cursor-pointer" size="sm" type="submit">Send</Button>
-  </form>
+      <div
+        class="absolute right-2 bottom-2 p-3 transition-opacity duration-500"
+        :class="{
+          'opacity-20 hover:opacity-80': !scrolledToBottom,
+          'opacity-0': scrolledToBottom,
+        }"
+      >
+        <Button size="icon" @click="scrollToBottom(false)">
+          <Icon name="carbon:arrow-down" class="size-5" />
+        </Button>
+      </div>
+    </div>
+
+    <form
+      class="flex w-full items-center gap-1.5"
+      @submit.prevent="submitInput"
+    >
+      <Input
+        id="command"
+        v-model="commandInput"
+        type="text"
+        placeholder="Type 'help' to see available commands"
+        class="!bg-background"
+      />
+      <Button class="cursor-pointer" size="sm" type="submit">Send</Button>
+    </form>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -42,6 +61,8 @@ const { follow } = defineProps<{
 
 const commandInput = ref<string>('');
 const output = ref<MinecraftLogMessage[]>([]);
+const endOfOutput = templateRef<HTMLSpanElement>('endOfOutput');
+const scrolledToBottom = useElementVisibility(endOfOutput);
 
 const {
   data: wsData,
