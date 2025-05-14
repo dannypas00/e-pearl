@@ -8,6 +8,4 @@ COPY . /app
 
 RUN set -eux; npm ci
 
-RUN set -eux; cp .env.production .env
-
 RUN set -eux; npm run build
