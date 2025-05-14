@@ -3,15 +3,20 @@
     <div
       class="w-full shrink overflow-hidden rounded-lg bg-zinc-800 py-6 inset-shadow-sm inset-shadow-zinc-900"
     >
-      <div class="flex w-full justify-between px-4 pb-5 sm:px-6">
+      <div
+        class="-mt-2 flex w-full items-center justify-between px-4 pb-3 sm:px-6"
+      >
         <h2>Main content</h2>
-        <div class="flex flex-row items-center space-x-2">
-          <Label for="follow-console">Follow console</Label>
-          <Switch id="follow-console" v-model="followConsole" />
+        <div class="flex flex-row items-center space-x-4">
+          <div class="flex flex-row items-center space-x-2">
+            <Label for="follow-console">Follow console</Label>
+            <Switch id="follow-console" v-model="followConsole" />
+          </div>
+          <LogFilterDropdown @filter="(value) => (logFilter = value)" />
         </div>
       </div>
       <div class="px-4 sm:px-6">
-        <CommandInput :follow="followConsole" />
+        <CommandInput :log-filter="logFilter" :follow="followConsole" />
       </div>
     </div>
 
@@ -31,8 +36,10 @@ import PlayerEntry from '~/components/partials/PlayerEntry.vue';
 import type { RconListResponse } from '~/server/api/rcon/list.get';
 import { Switch } from '~/components/ui/switch';
 import { Label } from '~/components/ui/label';
+import LogFilterDropdown from '~/components/partials/LogFilterDropdown.vue';
 
 const followConsole = ref(true);
+const logFilter: Ref<string[]> = ref([]);
 
 const { data: listResponse } = await useFetch<RconListResponse>(
   '/api/rcon/list',

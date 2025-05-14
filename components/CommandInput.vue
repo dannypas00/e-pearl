@@ -7,11 +7,12 @@
       ref="outputContent"
       class="flex flex-col gap-y-1 py-2 text-wrap wrap-anywhere"
     >
-      <MinecraftLogLine
-        v-for="(message, index) in output"
-        :key="index"
-        :message="message"
-      />
+      <template v-for="(message, index) in output" :key="index">
+        <MinecraftLogLine
+          v-if="logFilter.includes(message?.level ?? 'DEBUG')"
+          :message="message"
+        />
+      </template>
       <span ref="endOfOutput" class="invisible"></span>
     </code>
   </ScrollArea>
@@ -36,6 +37,7 @@ import type MinecraftLogMessage from '~/types/MinecraftLogMessage';
 
 const { follow } = defineProps<{
   follow: boolean;
+  logFilter: string[];
 }>();
 
 const commandInput = ref<string>('');
