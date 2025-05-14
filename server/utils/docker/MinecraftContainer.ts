@@ -5,7 +5,9 @@ export function getDocker(): Docker {
 }
 
 export async function getContainers() {
-  return await getDocker().listContainers();
+  return await getDocker().listContainers({
+    all: true,
+  });
 }
 
 export async function getMinecraftContainer(includeStopped: boolean = false) {
