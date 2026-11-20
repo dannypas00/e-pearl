@@ -6,6 +6,7 @@ let stream: NodeJS.ReadWriteStream | undefined;
 export default defineWebSocketHandler({
   async open(peer) {
     try {
+      // TODO: Attach to kubernetes container instead, depending on app config
       const container = await getMinecraftContainer();
 
       stream = await container.attach({
