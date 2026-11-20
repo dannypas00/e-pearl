@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: minecraft
+spec:
+  containers:
+    - name: minecraft
+      image: itzg/minecraft-server:stable
+      ports:
+        - containerPort: 25565
+      environment:
+        EULA: "TRUE"
+        VERSION: "LATEST"
+        ENABLE_RCON: "TRUE"
+        RCON_PASSWORD: "super-safe-rcon-password"
+        MEMORY: "1G"
+        ENABLE_QUERY: "TRUE"
+      volumeMounts:
+      - 
+      
