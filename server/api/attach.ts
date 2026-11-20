@@ -2,7 +2,7 @@ import { attachToContainer } from '~/server/utils/kubernetes/MinecraftContainer'
 import { getMinecraftContainer } from '~/server/utils/docker/MinecraftContainer';
 import type { Hooks } from 'crossws';
 import type { PassThrough } from 'node:stream';
-import MinecraftLogMessage from '~/types/MinecraftLogMessage';
+import type MinecraftLogMessage from '~/types/MinecraftLogMessage';
 
 let streams: {
   stdin: PassThrough | NodeJS.ReadWriteStream;
@@ -58,7 +58,9 @@ export default defineWebSocketHandler({
     try {
       await assignStreams();
 
+      // @ts-expect-error This works but types don't match exactly
       streams.stdout.on('data', handleMessage);
+      // @ts-expect-error This works but types don't match exactly
       streams.stderr.on('data', (data: Buffer) => {
         console.error(data.toString());
       });
@@ -73,7 +75,7 @@ export default defineWebSocketHandler({
     }
 
     console.log(getCommandLogLine(message.toString()));
-    
+
     peer.send(JSON.stringify([getCommandLogLine(message.toString())]));
     streams.stdin.write(message.toString() + '\n');
   },

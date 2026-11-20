@@ -18,7 +18,7 @@ const rootSize = useElementSize(rootElement);
 defineExpose({
   scrollBottom: () => {
     rootElement.value?.viewport?.scrollTo({
-      top: rootSize.height,
+      top: rootSize.height.value,
     });
   },
 });

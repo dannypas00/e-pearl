@@ -24,15 +24,15 @@ metadata:
   namespace: default
   name: pod-reader
 rules:
-  - apiGroups: [""]
-    resources: ["pods"]
-    verbs: ["get", "watch", "list"]
-  - apiGroups: [""]
-    resources: ["pods/log"]
-    verbs: ["get"]
-  - apiGroups: [""]
-    resources: ["pods/attach"]
-    verbs: ["get", "create"]
+  - apiGroups: ['']
+    resources: ['pods']
+    verbs: ['get', 'watch', 'list']
+  - apiGroups: ['']
+    resources: ['pods/log']
+    verbs: ['get']
+  - apiGroups: ['']
+    resources: ['pods/attach']
+    verbs: ['get', 'create']
 
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -42,11 +42,11 @@ metadata:
 subjects:
   - kind: ServiceAccount
     name: e-pearl
-    apiGroup: ""
+    apiGroup: ''
 roleRef:
   kind: Role
   name: pod-reader
-  apiGroup: ""
+  apiGroup: ''
 
 ---
 apiVersion: v1
@@ -67,17 +67,17 @@ spec:
         - containerPort: 25565
       env:
         - name: EULA
-          value: "TRUE"
+          value: 'TRUE'
         - name: VERSION
-          value: "LATEST"
+          value: 'LATEST'
         - name: ENABLE_RCON
-          value: "TRUE"
+          value: 'TRUE'
         - name: RCON_PASSWORD
-          value: "super-safe-rcon-password"
+          value: 'super-safe-rcon-password'
         - name: MEMORY
-          value: "1G"
+          value: '1G'
         - name: ENABLE_QUERY
-          value: "TRUE"
+          value: 'TRUE'
     - name: e-pearl
       imagePullPolicy: IfNotPresent
       image: node:22
