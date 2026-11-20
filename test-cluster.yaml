@@ -1,20 +1,58 @@
 apiVersion: v1
+kind: Service
+metadata:
+  name: e-pearl
+spec:
+  selector:
+    app.kubernetes.io/name: Minecraft
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000
+
+---
+apiVersion: v1
 kind: Pod
 metadata:
   name: minecraft
+  labels:
+    app.kubernetes.io/name: Minecraft
 spec:
   containers:
     - name: minecraft
-      image: itzg/minecraft-server:stable
+      imagePullPolicy: IfNotPresent
+      image: itzg/minecraft-server
       ports:
         - containerPort: 25565
-      environment:
-        EULA: "TRUE"
-        VERSION: "LATEST"
-        ENABLE_RCON: "TRUE"
-        RCON_PASSWORD: "super-safe-rcon-password"
-        MEMORY: "1G"
-        ENABLE_QUERY: "TRUE"
+      env:
+        - name: EULA
+          value: "TRUE"
+        - name: VERSION
+          value: "LATEST"
+        - name: ENABLE_RCON
+          value: "TRUE"
+        - name: RCON_PASSWORD
+          value: "super-safe-rcon-password"
+        - name: MEMORY
+          value: "1G"
+        - name: ENABLE_QUERY
+          value: "TRUE"
+    - name: e-pearl
+      imagePullPolicy: IfNotPresent
+      image: node:22
+      ports:
+        - containerPort: 3000
+      command:
+        - npm
+        - run
+        - dev
+      workingDir: /app
       volumeMounts:
-      - 
-      
+        - mountPath: /app
+          name: application
+  volumes:
+    - name: application
+      hostPath:
+        path: /mnt/e-pearl
+        type: Directory
