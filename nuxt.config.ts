@@ -41,6 +41,7 @@ export default defineNuxtConfig({
   },
 
   runtimeConfig: {
+    kubernetes: Boolean(process.env.KUBERNETES ?? false),
     minecraft: {
       host: process.env.MINECRAFT_HOST,
     },

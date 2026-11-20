@@ -55,6 +55,8 @@ const levelClass = computed(() => {
       return 'text-yellow-500/50';
     case 'ERROR':
       return 'text-red-500/50';
+    case 'E-PEARL':
+      return 'text-indigo-500/50';
     default:
       return 'text-gray-300';
   }

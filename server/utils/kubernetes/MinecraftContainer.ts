@@ -1,10 +1,30 @@
-import k8s from '@kubernetes/client-node';
+import { KubeConfig, Attach, Log } from '@kubernetes/client-node';
+import { PassThrough } from 'node:stream';
 
-const kc = new k8s.KubeConfig();
-kc.loadFromDefault();
+const config = new KubeConfig();
+config.loadFromDefault();
+const attach = new Attach(config);
+const log = new Log(config);
 
-const k8sApi = kc.makeApiClient(k8s.CoreV1Api);
+export async function attachToContainer() {
+  const stdout = new PassThrough();
+  const stderr = new PassThrough();
+  const stdin = new PassThrough();
+  const hostname: string = process.env['HOSTNAME'] ?? '';
 
-k8sApi.listNamespacedPod({ namespace: 'default' }).then((res) => {
-  console.log(res);
-});
+  await attach.attach(
+    'default',
+    hostname,
+    'minecraft',
+    null,
+    stderr,
+    stdin,
+    false,
+  );
+
+  await log.log('default', hostname, 'minecraft', stdout, {
+    follow: true,
+  });
+
+  return { stdout, stderr, stdin };
+}

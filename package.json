@@ -9,7 +9,7 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "kube:start": "minikube start -p e-pearl --mount-string ./:/mnt/e-pearl",
+    "kube:start": "minikube start -p e-pearl --mount-string ./:/mnt/e-pearl --addons=ingress",
     "kube:deploy": "minikube kubectl -p e-pearl -- apply -f ./test-cluster.yaml",
     "kube:destroy": "minikube delete -p e-pearl",
     "kube:dev": "minikube service -p e-pearl e-pearl --url",

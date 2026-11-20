@@ -11,7 +11,10 @@
         >
           <template v-for="(message, index) in output" :key="index">
             <MinecraftLogLine
-              v-if="logFilter.includes(message?.level ?? 'DEBUG')"
+              v-if="
+                logFilter.includes(message?.level ?? 'DEBUG') ||
+                message?.level === 'E-PEARL'
+              "
               :message="message"
             />
           </template>
@@ -69,7 +72,7 @@ const {
   send: wsSend,
   open: wsOpen,
   close: wsClose,
-} = useWebSocket('/api/docker/attach', {
+} = useWebSocket('/api/attach', {
   immediate: false,
   autoReconnect: {
     delay: 10000,
@@ -77,6 +80,7 @@ const {
 });
 
 watch(wsData, async (data) => {
+  console.log(data);
   const messages = JSON.parse(data);
   output.value.push(...messages);
   await nextTick();

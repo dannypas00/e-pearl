@@ -13,16 +13,56 @@ spec:
 
 ---
 apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: e-pearl
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: default
+  name: pod-reader
+rules:
+  - apiGroups: [""]
+    resources: ["pods"]
+    verbs: ["get", "watch", "list"]
+  - apiGroups: [""]
+    resources: ["pods/log"]
+    verbs: ["get"]
+  - apiGroups: [""]
+    resources: ["pods/attach"]
+    verbs: ["get", "create"]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: read-pods
+subjects:
+  - kind: ServiceAccount
+    name: e-pearl
+    apiGroup: ""
+roleRef:
+  kind: Role
+  name: pod-reader
+  apiGroup: ""
+
+---
+apiVersion: v1
 kind: Pod
 metadata:
   name: minecraft
   labels:
     app.kubernetes.io/name: Minecraft
 spec:
+  serviceAccountName: e-pearl
   containers:
     - name: minecraft
       imagePullPolicy: IfNotPresent
       image: itzg/minecraft-server
+      stdin: true
+      tty: false
       ports:
         - containerPort: 25565
       env:
@@ -41,6 +81,8 @@ spec:
     - name: e-pearl
       imagePullPolicy: IfNotPresent
       image: node:22
+      stdin: true
+      tty: false
       ports:
         - containerPort: 3000
       command:
